@@ -1,0 +1,122 @@
+
+
+<frisbee>
+
+	
+	<connector class='communications.MyConnector' id='Connector1'>
+		
+		<arg1 class='String'>argument1</arg1>
+		<arg2 class='Integer'>1</arg2>
+
+		<connection class='frisbee.communications.MyConnection' id='Connection1'>
+			<arg1 class='String'>argument1</arg1>
+			<arg2 class='Integer'>1</arg2>
+		</connection>
+		
+
+	</connector>
+
+
+	<logger>
+		<output id ='1' mode='async'>
+			
+		<output>
+		
+		<field id ='ErrorDescription'>
+			<forceOuputValue class='String'>ABC</forceOuputValue>
+			<length class='Integer'>32</length>
+			<lpad class='String'> <lpad>
+			<rpad class='String'>0</rpad>
+			<header class='String'> </header>
+			<footer class='String'> </footer>
+			<key class='Integer'>1</key>
+		<field>
+		
+	</logger>
+	
+	<message id='TestMessage'>
+	
+		<input id='Connection2'  mode='sync'>
+
+			<arg1 class='String'></arg1>
+			<arg2 class='String'></arg2>	
+			<delim class='String'></delim> <!-- length if null -->
+			<stx class='String' ></stx>
+			<etx class='String'></etx>
+			<matchStyle class='String'>exact</matchStyle>  <!-- exact match; closest match under; closest match over-->
+		</input>
+		
+		<output id='Connection1' mode='sync'>
+	
+			<arg1></arg1>
+			<arg2></arg2>
+
+			
+			<length class='Integer'>32</length>
+			<lpad class='String'> <lpad>
+			<rpad class='String'>0</rpad>
+			<header class='String'> </header>
+			<footer class='String'> </footer>
+			
+			
+			
+			<returnMessage id='r1' mode='async'>	
+					<>
+					<>
+			</returnMessage> <!-- get's passed return values -->
+			
+			<returnMessage id='r2' mode='sync'>
+				<>
+			</returnMessage>  
+				
+			<followMessage mode='sync'>
+				 
+			</followMessage> <!-- get's passed inputs+oututs after every output-->
+			
+			<eotMessage>
+			
+			</eotMessage> <!-- get's passed inputs+outputs after all input messages are processed and trasmitted-->
+		</output>
+		
+		<ouput id='2' mode='async'>
+		</output>
+		
+		
+		<field>
+		
+			<input id='ccc'>
+				<matchOnValue class='String'>ABC</matchOnValue>
+				<key class='Integer'>1</key>
+			</input>
+			
+			<output id='c2'>
+				<forceOuputValue class='String'>ABC</forceOuputValue>
+				<length class='Integer'>32</length>
+				<lpad class='String'> <lpad>
+				<rpad class='String'>0</rpad>
+				<header class='String'> </header>
+				<footer class='String'> </footer>
+				<key class='Integer'>1</key> <!-- two identical output keys for 2 different inputs are concatenated -->
+			</ouput>
+			
+			<output id='c1'>
+				<forceOuputValue class='String'>ABC</forceOuputValue>
+				<length class='Integer'>32</length>
+				<lpad class='String'> <lpad>
+				<rpad class='String'>0</rpad>
+				<header class='String'> </header>
+				<footer class='String'> </footer>
+				<key class='Integer'>1</key>
+			</ouput>
+		
+		</field>
+		
+		
+		<field></field>
+		<field></field>
+		
+	</message>
+
+</frisbee>
+
+

@@ -8,9 +8,9 @@ import messaging.Message;
 /** 
  * The {@code Connection} abstract class defines the state and capabilities of a connection. 
  * <p>
- * A connection must belong to a connector and a connector may have multiple connections.
+ * A {@code Connection}  must belong to a {@link communications.Connector connector} and a {@link communications.Connector connector} may have multiple connections.
  * <p>
- * A connection is used to establish a link to a single data source or destination.
+ * A {@code Connection}  is used to establish a link to a single data source or destination.
  * <p>
  * When the connection {@link Connection.ConnectionMode mode} is set to {@link Connection.ConnectionMode#READ READ} or {@link Connection.ConnectionMode#READWRITE READWRITE}, 
  * the {@link #read() read}  method may used to retrieve a source {@link messaging.Message message}.
@@ -19,7 +19,7 @@ import messaging.Message;
  * the {@link #write(Message message) write} method may used to write to a destination {@link messaging.Message message}.
  * <p>
  * 
- * @author adamopoulosp
+ * @author adamopan
  * @version 0.1 
  * @since 0.1
  */
@@ -155,7 +155,7 @@ public abstract class Connection  extends Observable {
 	/**
 	 * Wrapper method used verify the connection mode before attempting to retrieve a message
 	 * 
-	 * @return the message retrieved
+	 * @return  the {@link messaging.Message} instance retrieved
 	 * @throws LoggedException on failure to retrieve a message
 	 */
 	public Message read() throws LoggedException{
@@ -171,7 +171,7 @@ public abstract class Connection  extends Observable {
 	/**
 	 * Method used to retrieve a message from a data source
 	 * 
-	 * @return the message retrieved
+	 * @return the {@link messaging.Message} instance retrieved
 	 * @throws LoggedException on failure to retrieve a message
 	 */
 	protected abstract Message readMessage() throws LoggedException;
@@ -180,6 +180,7 @@ public abstract class Connection  extends Observable {
 	/**
 	 * Wrapper method used verify the connection mode before attempting to write a message to a destination
 	 * 
+	 * @param message the {@link messaging.Message} instance to that is to be output
 	 * @throws LoggedException on failure to write message to destination
 	 */
 	public void write(Message message) throws LoggedException
@@ -189,7 +190,7 @@ public abstract class Connection  extends Observable {
 			writeMessage(message);
 		}
 		else{
-			throw new Exception("Connection does not support writing");
+			throw new LoggedException("Connection does not support writing");
 		}
 	}
 	
@@ -203,6 +204,7 @@ public abstract class Connection  extends Observable {
 	/**
 	 * Returns the current state of the connection
 	 * 
+	 * @param message the {@link messaging.Message} instance to that is to be output
 	 * @return the current connection state
 	 * 
 	 */
