@@ -164,7 +164,7 @@ public abstract class Connection  extends Observable {
 			return readMessage();
 		}
 		else{
-			throw new LoggedException();
+			throw new LoggedException(null);
 		}
 	}
 	
@@ -190,7 +190,7 @@ public abstract class Connection  extends Observable {
 			writeMessage(message);
 		}
 		else{
-			throw new LoggedException("Connection does not support writing");
+			throw new LoggedException(null);
 		}
 	}
 	

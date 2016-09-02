@@ -62,7 +62,13 @@ public class LoggedException extends Exception{
 	 */
 	private Exception innerException;
 	
-	
+	/**
+	 *  Temporary Class Constructor, to be removed as development advances  
+	 */
+	public LoggedException(Exception e) {
+		super(e);
+	}
+
 	/**
 	 * Class Constructor  
 	 *  
@@ -75,7 +81,7 @@ public class LoggedException extends Exception{
 	 * @param errorTimestamp  the timestamp when the error occured
 	 * 
 	 */
-	LoggedException(Exception innerException,Message sourceMessage,String errorClass,String errorMethod,ErrorCategory errorCategory,String errorID, Long errorTimestamp) {
+	public LoggedException(Exception innerException,Message sourceMessage,String errorClass,String errorMethod,ErrorCategory errorCategory,String errorID, Long errorTimestamp) {
 		
 	}
 	

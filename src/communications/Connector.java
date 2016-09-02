@@ -91,19 +91,21 @@ public abstract class Connector extends Observable {
 		if(!this.connections.containsKey(connection.getConnectionID()))
 			this.connections.put(connection.getConnectionID(), connection);
 		else
-			throw new LoggedException();
+			throw new LoggedException(null);
 	}
 	
 	/**
 	 * Method used to remove a {@link communications.Connection connections} instance to the {@code Connector}
 	 * 
 	 * @return true on successful removal, false on failure
+	 * @throws LoggedException when the closing a connection fails
 	 * 
 	 */
-	public boolean removeConnection(Connection connection) 
+	public boolean removeConnection(Connection connection) throws LoggedException 
 	{
+		boolean removed = this.connections.remove(connection.getConnectionID(), connection);
 		connection.close();
-		return this.connections.remove(connection.getConnectionID(), connection);
+		return removed;
 	}
 	
 	/**

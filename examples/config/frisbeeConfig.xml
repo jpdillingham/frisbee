@@ -18,19 +18,30 @@
 
 
 	<logger>
+	
 		<output id ='1' mode='async'>
 			
-		<output>
+		</output>
 		
 		<field id ='ErrorDescription'>
 			<forceOuputValue class='String'>ABC</forceOuputValue>
 			<length class='Integer'>32</length>
-			<lpad class='String'> <lpad>
+			<lpad class='String'></lpad>
 			<rpad class='String'>0</rpad>
-			<header class='String'> </header>
-			<footer class='String'> </footer>
+			<header class='String'></header>
+			<field id ='ErrorDescription33'>
+				<forceOuputValue class='String'>ABC</forceOuputValue>
+				<length class='Integer'>32</length>
+				<lpad class='String'></lpad>
+				<rpad class='String'>0</rpad>
+				<header class='String'></header>
+				<footer class='String'></footer>
+				<key class='Integer'>1</key>
+			</field>
+			<footer class='String'></footer>
 			<key class='Integer'>1</key>
-		<field>
+		</field>
+		
 		
 	</logger>
 	
@@ -41,7 +52,7 @@
 			<arg1 class='String'></arg1>
 			<arg2 class='String'></arg2>	
 			<delim class='String'></delim> <!-- length if null -->
-			<stx class='String' ></stx>
+			<stx class='String'></stx>
 			<etx class='String'></etx>
 			<matchStyle class='String'>exact</matchStyle>  <!-- exact match; closest match under; closest match over-->
 		</input>
@@ -53,7 +64,7 @@
 
 			
 			<length class='Integer'>32</length>
-			<lpad class='String'> <lpad>
+			<lpad class='String'> </lpad>
 			<rpad class='String'>0</rpad>
 			<header class='String'> </header>
 			<footer class='String'> </footer>
@@ -61,12 +72,11 @@
 			
 			
 			<returnMessage id='r1' mode='async'>	
-					<>
-					<>
+		
 			</returnMessage> <!-- get's passed return values -->
 			
 			<returnMessage id='r2' mode='sync'>
-				<>
+			
 			</returnMessage>  
 				
 			<followMessage mode='sync'>
@@ -78,7 +88,7 @@
 			</eotMessage> <!-- get's passed inputs+outputs after all input messages are processed and trasmitted-->
 		</output>
 		
-		<ouput id='2' mode='async'>
+		<output id='2' mode='async'>
 		</output>
 		
 		
@@ -92,22 +102,22 @@
 			<output id='c2'>
 				<forceOuputValue class='String'>ABC</forceOuputValue>
 				<length class='Integer'>32</length>
-				<lpad class='String'> <lpad>
+				<lpad class='String'> </lpad>
 				<rpad class='String'>0</rpad>
 				<header class='String'> </header>
 				<footer class='String'> </footer>
 				<key class='Integer'>1</key> <!-- two identical output keys for 2 different inputs are concatenated -->
-			</ouput>
+			</output>
 			
 			<output id='c1'>
 				<forceOuputValue class='String'>ABC</forceOuputValue>
 				<length class='Integer'>32</length>
-				<lpad class='String'> <lpad>
+				<lpad class='String'> </lpad>
 				<rpad class='String'>0</rpad>
 				<header class='String'> </header>
 				<footer class='String'> </footer>
 				<key class='Integer'>1</key>
-			</ouput>
+			</output>
 		
 		</field>
 		
