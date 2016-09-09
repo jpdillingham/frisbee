@@ -19,17 +19,16 @@
 
 	<logger>
 	
-		<output id ='1' mode='async'>
-			
+		<output id ='Connection1' mode='async'>
+			<arg2 class='Integer'>1</arg2>
 		</output>
 		
 		<field id ='ErrorDescription'>
-			<forceOuputValue class='String'>ABC</forceOuputValue>
-			<length class='Integer'>32</length>
-			<lpad class='String'></lpad>
-			<rpad class='String'>0</rpad>
-			<header class='String'></header>
-			<field id ='ErrorDescription33'>
+			<input>
+				<key class='String'>ErrorDescription</key>
+			</input>
+			
+			<output id='Connection1'>
 				<forceOuputValue class='String'>ABC</forceOuputValue>
 				<length class='Integer'>32</length>
 				<lpad class='String'></lpad>
@@ -37,11 +36,9 @@
 				<header class='String'></header>
 				<footer class='String'></footer>
 				<key class='Integer'>1</key>
-			</field>
-			<footer class='String'></footer>
-			<key class='Integer'>1</key>
+			</output>
 		</field>
-		
+	
 		
 	</logger>
 	

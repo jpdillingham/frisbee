@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Observable;
 
 import exceptions.LoggedException;
-import messaging.Message;
 
 /** 
 * The {@code Connector} abstract class defines the state and capabilities of a connector. 

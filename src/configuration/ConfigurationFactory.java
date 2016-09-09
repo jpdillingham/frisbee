@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,11 @@ import org.w3c.dom.NodeList;
 
 import communications.Connector;
 import exceptions.LoggedException;
-import messaging.Message;
+import frisbee.Frisbee;
+import messaging.MessageFieldConfig;
+import messaging.MessageIOConfig;
+import messaging.MessageIOConfig.Mode;
+import messaging.MessageMapping;
 
 /** 
 * The {@code ConfigurationFactory} class instantiates all the configuration items needed for the startup of a frisbee service instance
@@ -32,22 +37,6 @@ import messaging.Message;
 */
 
 public class ConfigurationFactory {
-	
-	
-	/**
-	 *  The {@link communications.Connector connectors} instances managed by this {@code ConfigurationFactory}
-	 */
-	private  List<Connector> connectors = new LinkedList<Connector>();
-	
-	/**
-	 *  The {@link messaging.Message messages} instances managed by this {@code ConfigurationFactory}
-	 */
-	private  List<Message> messages = new LinkedList<Message>();
-	
-	/**
-	 *  The {@link messaging.Message loggers} instances managed by this {@code ConfigurationFactory}
-	 */
-	private  List<Message> loggers = new LinkedList<Message>();
 	
 	/**
 	 * Method used to retrieve a matching node from the xml
@@ -179,9 +168,207 @@ public class ConfigurationFactory {
 	}
 	
 	/**
+	 * Method used to extract text content of xml tag attributes
+	 * 
+	 * @param node the node attributes to examine
+	 * @param match the node attribute from which to extract it's text content 
+	 * 
+	 * @return  trimmed text content of xml tag attributes 
+	 * 
+	 */
+	private String getTagAttributes(Node node,String match) {
+		Node attributeNode = node.getAttributes().getNamedItem(match);
+		String textContent = null;
+		if( attributeNode != null )
+			textContent = attributeNode.getTextContent().trim();
+		
+		return textContent;
+	}
+	
+	/**
+	 * Method used to extract Message Mapping  configuration
+	 * 
+	 * @param node the node attributes to examine 
+	 * @parm matchMessage tag containing the messahe
+	 * 
+	 * @return  the list of message Mapping configurations
+	 * @throws LoggedException 
+	 * 
+	 */
+	private List<MessageMapping> getMessageMapping(Node node,String matchMessage) throws LoggedException {
+		
+		 List<MessageMapping> messageMappings = new  LinkedList<MessageMapping>();
+		 
+		//Grab all the Message mapping configurations
+		List<Node> messageNodes = this.browseChildren(node, matchMessage);			
+		for(Node m : messageNodes) {
+			
+			String id = this.getTagAttributes(m, "id");
+			
+			//Get all the message input configuration
+			List<MessageIOConfig> messageInputsConfigs = this.getMessageIOConfig(m, "input");
+			
+		
+			//Get all the message output configuration
+			List<MessageIOConfig> messageOutputConfigs = this.getMessageIOConfig(m, "output");
+			
+			//Get all the message field mappings
+			for(MessageIOConfig input: messageInputsConfigs) {	
+				
+				List<MessageFieldConfig> MessageFieldConfig = this.getMessageFieldConfig(m,input.getConnectionID());
+				
+				MessageMapping messageMap = new MessageMapping(id);
+				messageMap.setInput(input);
+				messageMap.setFields(MessageFieldConfig);
+				
+				List<MessageIOConfig> syncOutputs = new LinkedList<MessageIOConfig>();
+				List<MessageIOConfig> asyncOutputs = new LinkedList<MessageIOConfig>();
+				
+				for(MessageIOConfig outputConfig : messageOutputConfigs) {
+					switch(outputConfig.getMode()) {
+						case ASYNC:
+							asyncOutputs.add(outputConfig);
+							break;
+						case SYNC:
+							syncOutputs.add(outputConfig);
+							break;
+					}
+					
+				}	
+				messageMap.setSyncOutputs(syncOutputs);
+				messageMap.setAsyncOutputs(asyncOutputs);
+				
+				messageMappings.add(messageMap);
+				
+				
+			}
+		}
+		
+		return messageMappings;
+	}
+	
+	/**
+	 * Method used to extract Message IO configuration
+	 * 
+	 * @param node the node attributes to examine 
+	 * @param match the node attribute from which to extract the Message IO configuration
+	 * 
+	 * @return  the list of message IO configurations
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	private List<MessageIOConfig> getMessageIOConfig(Node node, String match) throws LoggedException {
+		
+		List<MessageIOConfig> messageIOConfigs = new LinkedList<MessageIOConfig>(); 
+		
+		List<Node> ios = this.browseChildren(node, match);
+		for(Node io: ios) {
+			
+			Object members = getObjectsFromXML(null,io);
+
+			String id = this.getTagAttributes(io, "id");
+			String s_mode = this.getTagAttributes(io, "mode");
+			
+			Mode mode = MessageIOConfig.Mode.ASYNC;
+			
+			if ( s_mode != null && s_mode.trim().toLowerCase().equals("sync"))
+				mode =  MessageIOConfig.Mode.SYNC;
+
+			Map<String,Object> membersList = null;
+			
+			if(members instanceof Map<?,?>)
+				membersList = (Map<String,Object>) members;
+			
+			if(id != null)
+				id = id.trim();
+			
+			MessageIOConfig messageIOconfig = new MessageIOConfig(id,mode,membersList);
+			
+			String [] postProcessOutputMsgs = {"returnMessage","followMessage","eotMessage"};
+			
+			for(String ppom : postProcessOutputMsgs) {
+
+				List<MessageMapping> messages = this.getMessageMapping(io,ppom);
+
+				switch(ppom) {
+					case "returnMessage":
+						messageIOconfig.setReturnMessages(messages);
+						break;
+					case "followMessage":
+						messageIOconfig.setFollowMessages(messages);
+						break;
+					case "eotMessage":
+						messageIOconfig.setFollowMessages(messages);
+						break;
+				}
+	
+			}
+			
+			messageIOConfigs.add(messageIOconfig);	
+		}
+		
+		return messageIOConfigs;
+	}
+	
+	/**
+	 * Method used to extract Message IO configuration
+	 * 
+	 * @param node field node to examin
+	 * @param inputMatch input node to match on an extract all of it's outputs
+	 * 
+	 * @return  the list of message field configurations
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	private List<MessageFieldConfig> getMessageFieldConfig(Node node,String inputMatch) throws LoggedException{
+		
+		
+		List<MessageFieldConfig> messageFieldConfigs = new LinkedList <MessageFieldConfig>();
+		List<Node> messageFields = this.browseChildren(node, "field");
+		
+		for(Node mf: messageFields) {
+			
+			String fieldID = this.getTagAttributes(mf, "id");
+			
+			//For every input, set all outputs configurations
+			List<Node> messageFieldsInputs = this.browseChildren(mf, "input");
+			for(Node mi : messageFieldsInputs) {
+				String fieldInputId = this.getTagAttributes(mi, "id");
+				if (inputMatch == null || inputMatch.equals(fieldInputId)) {
+					
+					Object inputs = getObjectsFromXML(null,mi);
+					
+					//set outputs for this input
+					LinkedHashMap<String, Map<String,Object>> outputArguments = new LinkedHashMap<String, Map<String,Object>>(); 
+					List<Node> messageFieldsOutputs = this.browseChildren(mf, "output");
+					for(Node mo : messageFieldsOutputs) {
+						Object outputs = getObjectsFromXML(null,mo);
+						String fieldOutputId = this.getTagAttributes(mo, "id");
+				
+						Map<String,Object> outputsList = null;
+						if(outputs instanceof Map<?,?>)
+							outputsList = (Map<String,Object>) outputs;
+						outputArguments.put(fieldOutputId, outputsList);
+					}
+					
+					Map<String,Object> inputsList = null;
+					if(inputs instanceof Map<?,?>)
+						inputsList = (Map<String,Object>) inputs;
+					
+					MessageFieldConfig messageFieldConfig = new MessageFieldConfig(fieldID,fieldInputId, inputsList,outputArguments);
+					
+					messageFieldConfigs.add(messageFieldConfig);
+				}
+			}	
+		}
+
+		return messageFieldConfigs;
+	}
+	
+	/**
 	 * Method used to extract the configuration parameters from an xml inputstream
 	 * 
-	 * @param xmlInputStream the input stream containing the cml frisbee configuration 
+	 * @param xmlInputStream the input stream containing the xml frisbee configuration 
 	 * 
 	 * @return  true when configuration loading succeeded 
 	 * 
@@ -201,35 +388,45 @@ public class ConfigurationFactory {
 			
 			List<Node> frisbeeNodes = this.browseChildren(doc, "frisbee");
 			
+			//Go through all the frisbee configurations
 			for(Node frisbeeNode: frisbeeNodes) {
-
-				List<Node> loggerNodes = this.browseChildren(frisbeeNode, "logger");
+				
+				FrisbeeConfig frisbeeConfig = new FrisbeeConfig(this.getTagAttributes(frisbeeNode, "id"));
+				
+				//Grab all the logger configurations
+				frisbeeConfig.setLoggers(this.getMessageMapping(frisbeeNode,"logger"));
+				
+				//Grab all the Message mapping configurations
+				frisbeeConfig.setMessageMappings(this.getMessageMapping(frisbeeNode,"message"));
 	
-				for(Node l : loggerNodes) {
-					List<Node> loggerFields = this.browseChildren(l, "field");
+				
+				//TODO: Grab all the connector configurations
+				List<Node> connectorNodes = this.browseChildren(frisbeeNode, "connector");
+				for(Node c : connectorNodes) {
+					String classType = this.getTagAttributes(c, "class");
+					String id = this.getTagAttributes(c, "id");
 					
-					for(Node lf: loggerFields) {
-						Object members = getObjectsFromXML(null,lf);
-						String id = lf.getAttributes().getNamedItem("id").getTextContent().trim();
-						System.out.println(id+":"+members);
+					System.out.println(classType+","+id);
+					
+					
+					//Grab all the connection configurations
+					List<Node> connectioNodes = this.browseChildren(c, "connection");
+					for(Node cn : connectioNodes) {
+						String connectionClassType = this.getTagAttributes(cn, "class");
+						String connectionId = this.getTagAttributes(cn, "id");
+						
+						System.out.println(connectionClassType+","+connectionId);
 					}
 					
+					Object members = getObjectsFromXML(null,c);
+					System.out.println(members);
+					
 				}
 				
-				List<Node> connectorNodes = this.browseChildren(frisbeeNode, "connector");
-				
-				for(Node c : connectorNodes) {
-				}
-				
-				
-				List<Node> messageNodes = this.browseChildren(frisbeeNode, "message");
+				boolean isAdded = Frisbee.addFrisbee(new Frisbee(frisbeeConfig));
 			
-				for(Node m : messageNodes) {
-				
-				}
-				
-				
 			}
+			
 			
 		} catch(LoggedException e) {
 			throw e;
