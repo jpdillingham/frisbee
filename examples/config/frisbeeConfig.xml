@@ -8,7 +8,7 @@
 		<arg1 class='String'>argument1</arg1>
 		<arg2 class='Integer'>1</arg2>
 
-		<connection class='frisbee.communications.MyConnection' id='Connection1'>
+		<connection class='communications.MyConnection' id='Connection1'>
 			<arg1 class='String'>argument1</arg1>
 			<arg2 class='Integer'>1</arg2>
 		</connection>

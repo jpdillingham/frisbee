@@ -1,9 +1,11 @@
 package communications;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Observable;
 
 import exceptions.LoggedException;
+import tools.Tools;
 
 /** 
 * The {@code Connector} abstract class defines the state and capabilities of a connector. 
@@ -44,6 +46,10 @@ public abstract class Connector extends Observable {
 		DISCONNECTED
 	};
 	
+	/**
+	 * Unique ID for this {@code Connector} instance
+	 */
+	private String connectorID;
 	
 	/**
 	 *  The {@link communications.Connection connections} managed by this {@code Connector}
@@ -54,7 +60,21 @@ public abstract class Connector extends Observable {
 	 * The state of the {@code Connector} instance
 	 */
 	private ConnectorState connectorState = ConnectorState.DISCONNECTED;
+	
+	
+	/**
+	 *  Connector configuration
+	 */
+	private Map<String,Object> connectorParameters;
+	
 
+	/**
+	 *  The connector constructor
+	 */
+	public Connector(){
+		this.connections = new LinkedHashMap<String,Connection>();
+	}
+	
 	/**
 	 * Method used to establish a link
 	 * 
@@ -116,5 +136,46 @@ public abstract class Connector extends Observable {
 		return connectorState;
 	}
 
+	/**
+	 * Method used to obtain the connector's ID
+	 * 
+	 * @return the connector's ID
+	 */
+	public String getConnectorID() {
+		return connectorID;
+	}
+
 	
+	/**
+	 * Method used to set the connector's ID
+	 * 
+	 * @param the connector's ID
+	 */
+	public void setConnectorID(String connectorID) {
+		this.connectorID = connectorID;
+	}
+
+	/**
+	 * @return the connectorParameters
+	 */
+	public Map<String,Object> getConnectorParameters() {
+		return connectorParameters;
+	}
+
+	/**
+	 * @param connectorParameters the connectorParameters to set
+	 */
+	public void setConnectorParameters(Map<String,Object> connectorParameters) {
+		this.connectorParameters = connectorParameters;
+	}
+
+	/**
+	 *  Method returning a string representation
+	 *  
+	 * @return string containing class name and member values
+	 */
+	public String toString() {
+		
+		return Tools.toString(this);
+	}
 }

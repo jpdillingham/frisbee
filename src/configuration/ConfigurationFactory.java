@@ -17,12 +17,14 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import communications.Connection;
 import communications.Connector;
 import exceptions.LoggedException;
 import frisbee.Frisbee;
 import messaging.MessageFieldConfig;
 import messaging.MessageIOConfig;
 import messaging.MessageIOConfig.Mode;
+import tools.Tools;
 import messaging.MessageMapping;
 
 /** 
@@ -69,7 +71,7 @@ public class ConfigurationFactory {
 	 * @param type the argument type
 	 * @param value the parent node to explore
 	 * 
-	 * @return the instantiated memeber
+	 * @return the instantiated member
 	 * @throws LoggedException when retrieving configuration failed
 	 */
 	private Object getObjectsFromXML(String type,Node value) throws LoggedException{
@@ -289,7 +291,7 @@ public class ConfigurationFactory {
 			for(String ppom : postProcessOutputMsgs) {
 
 				List<MessageMapping> messages = this.getMessageMapping(io,ppom);
-
+			
 				switch(ppom) {
 					case "returnMessage":
 						messageIOconfig.setReturnMessages(messages);
@@ -374,6 +376,7 @@ public class ConfigurationFactory {
 	 * 
 	 * @throws LoggedException when retrieving configuration failed
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean getConfiguration(InputStream xmlInputStream) throws LoggedException {
 		
 		try {
@@ -400,13 +403,27 @@ public class ConfigurationFactory {
 				frisbeeConfig.setMessageMappings(this.getMessageMapping(frisbeeNode,"message"));
 	
 				
-				//TODO: Grab all the connector configurations
+				//Grab all the connector configurations
 				List<Node> connectorNodes = this.browseChildren(frisbeeNode, "connector");
+				
 				for(Node c : connectorNodes) {
 					String classType = this.getTagAttributes(c, "class");
 					String id = this.getTagAttributes(c, "id");
 					
-					System.out.println(classType+","+id);
+					
+					Class<?> connectorClass = Class.forName(classType);
+					Connector connector = (Connector) connectorClass.newInstance();
+					connector.setConnectorID(id);
+					
+					Object members = getObjectsFromXML(null,c);
+					Map<String,Object> membersList = null;
+					if(members instanceof Map<?,?>) {
+						membersList = (Map<String,Object>) members;
+						//remove connection configurations as they are processed separately below
+						membersList.remove("connection");
+					}
+
+					connector.setConnectorParameters((Map<String,Object>) members);
 					
 					
 					//Grab all the connection configurations
@@ -415,16 +432,25 @@ public class ConfigurationFactory {
 						String connectionClassType = this.getTagAttributes(cn, "class");
 						String connectionId = this.getTagAttributes(cn, "id");
 						
-						System.out.println(connectionClassType+","+connectionId);
+						Class<?> connectionClass = Class.forName(connectionClassType);
+						Connection connection = (Connection) connectionClass.newInstance();
+						connection.setConnectorID(connectionId);
+						
+						members = getObjectsFromXML(null,cn);
+						connection.setConnectionParameters((Map<String,Object>) members);
+						
+						connector.addConnection(connection);
+						
+						
 					}
 					
-					Object members = getObjectsFromXML(null,c);
-					System.out.println(members);
+					frisbeeConfig.addConnector(connector);
 					
 				}
 				
-				boolean isAdded = Frisbee.addFrisbee(new Frisbee(frisbeeConfig));
-			
+				Frisbee frisbee = new Frisbee(frisbeeConfig);
+				boolean isAdded = Frisbee.addFrisbee(frisbee);
+				
 			}
 			
 			
@@ -439,11 +465,26 @@ public class ConfigurationFactory {
 		return false;
 	}
 
+	/**
+	 *  Method returning a string representation
+	 *  
+	 * @return string containing class name and member values
+	 */
+	public String toString() {
+		
+		return Tools.toString(this);
+	}
+	
 	public static void main(String[] args) {
 		
 		ConfigurationFactory cf = new ConfigurationFactory();
 		try {
 			cf.getConfiguration("./examples/config/frisbeeConfig.xml");
+			
+			for(Frisbee f: Frisbee.getFrisbees()) {
+				System.out.println(f);
+			}
+			
 		} catch (LoggedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

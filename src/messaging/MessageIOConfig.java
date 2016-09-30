@@ -3,6 +3,8 @@ package messaging;
 import java.util.List;
 import java.util.Map;
 
+import tools.Tools;
+
 /** 
 * The {@code MessageIOConfig} class is used to define input and output global configuration for a given {@link messaging.MessageMapping message}
 * 
@@ -102,7 +104,7 @@ public class MessageIOConfig  {
 	 *  @param  returnMessages the message mapping configuration values
 	 */
 	public void setReturnMessages(List<MessageMapping> returnMessages) {
-		this.returnMessages = followMessages;
+		this.returnMessages = returnMessages;
 	}
 
 
@@ -163,6 +165,14 @@ public class MessageIOConfig  {
 	}
 
 
-
+	/**
+	 *  Method returning a string representation
+	 *  
+	 * @return string containing class name and member values
+	 */
+	public String toString() {
+		
+		return Tools.toString(this);
+	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import communications.Connector;
 import messaging.MessageMapping;
+import tools.Tools;
 
 
 /** 
@@ -82,12 +83,12 @@ public class FrisbeeConfig {
 	}
 
 	/**
-	 *  Sets the connector configurations for a frisbee instance
+	 *  Adds a connector configurations for a frisbee instance
 	 *  
-	 *  @param connectors the connector configuration values
+	 *  @param connector the connector configuration values
 	 */
-	public void setConnectors(List<Connector> connectors) {
-		this.connectors = connectors;
+	public void addConnector(Connector connector) {
+		this.connectors.add(connector);
 	}
 
 	
@@ -95,4 +96,13 @@ public class FrisbeeConfig {
 		
 	}
 	
+	/**
+	 *  Method returning a string representation
+	 *  
+	 * @return string containing class name and member values
+	 */
+	public String toString() {
+		
+		return Tools.toString(this);
+	}
 }

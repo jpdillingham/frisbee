@@ -1,9 +1,11 @@
 package communications;
 
+import java.util.Map;
 import java.util.Observable;
 
 import exceptions.LoggedException;
 import messaging.Message;
+import tools.Tools;
 
 /** 
  * The {@code Connection} abstract class defines the state and capabilities of a connection. 
@@ -103,6 +105,10 @@ public abstract class Connection  extends Observable {
 		READWRITE
 	};
 	
+	/**
+	 *  Connection configuration
+	 */
+	private Map<String,Object> connectionParameters;
 	
 	/**
 	 *  The current connection state of a {@code Connection} instance
@@ -233,6 +239,15 @@ public abstract class Connection  extends Observable {
 	}
 	
 	/**
+	 * Method used to set the connection's ID
+	 * 
+	 * @param the connection's ID
+	 */
+	public void setConnectorID(String connectionID) {
+		this.connectionID = connectionID;
+	}
+	
+	/**
 	 * Returns The parent #Connector instance to which this connection belongs
 	 * 
 	 * @return the parent #Connector instance to which this connection belongs
@@ -242,4 +257,27 @@ public abstract class Connection  extends Observable {
 		return parentConnector;
 	}
 
+	/**
+	 * @return the connectionParameters
+	 */
+	public Map<String,Object> getConnectionParameters() {
+		return connectionParameters;
+	}
+
+	/**
+	 * @param connectionParameters the connectionParameters to set
+	 */
+	public void setConnectionParameters(Map<String,Object> connectionParameters) {
+		this.connectionParameters = connectionParameters;
+	}
+
+	/**
+	 *  Method returning a string representation
+	 *  
+	 * @return string containing class name and member values
+	 */
+	public String toString() {
+		
+		return Tools.toString(this);
+	}
 }

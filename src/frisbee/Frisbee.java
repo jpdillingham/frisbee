@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import configuration.FrisbeeConfig;
+import tools.Tools;
 
 public class Frisbee {
 	
@@ -13,12 +14,16 @@ public class Frisbee {
 	 */
 	private static List<Frisbee> frisbees = new LinkedList<Frisbee>();
 
+	/**
+	 *  Configuration for a frisbee
+	 */
+	private FrisbeeConfig frisbeeConfig = null;
 	
 	/**
 	 *  Constructor for a frisbee 
 	 */
 	public Frisbee(FrisbeeConfig config) {
-		
+		this.setFrisbeeConfig(config);
 	}
 
 	/**
@@ -28,4 +33,43 @@ public class Frisbee {
 	{
 		return Frisbee.frisbees.add(frisbee);
 	}
+	
+	
+	/**
+	 *  Method returning a string representation
+	 *  
+	 * @return string containing class name and member values
+	 */
+	public String toString() {
+		
+		String out = new String();
+		
+		for (Frisbee f : frisbees) {
+			out += f.getFrisbeeConfig();
+		}
+			
+		return out;
+	}
+
+	/**
+	 * @return the frisbeeConfig
+	 */
+	public FrisbeeConfig getFrisbeeConfig() {
+		return frisbeeConfig;
+	}
+
+	/**
+	 * @param frisbeeConfig the frisbeeConfig to set
+	 */
+	public void setFrisbeeConfig(FrisbeeConfig frisbeeConfig) {
+		this.frisbeeConfig = frisbeeConfig;
+	}
+	
+	/**
+	 * @return All the system's frisbee instances
+	 */
+	public static List<Frisbee> getFrisbees(){
+		return Frisbee.frisbees;
+	}
+	
 }

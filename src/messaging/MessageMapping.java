@@ -1,5 +1,8 @@
 package messaging;
+import java.lang.reflect.Field;
 import java.util.List;
+
+import tools.Tools;
 
 /** 
 * The {@code MessageMapping} class is used to define the various messages used by the system
@@ -123,4 +126,15 @@ public class MessageMapping {
 	public void setInput(MessageIOConfig input) {
 		this.input = input;
 	}
+	
+	/**
+	 *  Method returning a string representation
+	 *  
+	 * @return string containing class name and member values
+	 */
+	public String toString() {
+		
+		return Tools.toString(this);
+	}
+	
 }

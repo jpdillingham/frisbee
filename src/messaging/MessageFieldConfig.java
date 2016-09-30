@@ -3,6 +3,8 @@ package messaging;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import tools.Tools;
+
 /** 
 * The {@code MessageFieldConfig} class is used to define field mappings found within a {@link messaging.MessageMapping message}
 * 
@@ -75,6 +77,14 @@ public class MessageFieldConfig {
 		this.inputArguments = inputArguments;
 	}
 	
-	
+	/**
+	 *  Method returning a string representation
+	 *  
+	 * @return string containing class name and member values
+	 */
+	public String toString() {
+		
+		return Tools.toString(this);
+	}
 	
 }
