@@ -1,11 +1,11 @@
-package configuration;
+package frisbee.configuration;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import communications.Connector;
-import messaging.MessageMapping;
-import tools.Tools;
+import frisbee.communications.Connector;
+import frisbee.messaging.MessageMapping;
+import frisbee.tools.Tools;
 
 
 /** 
@@ -23,17 +23,17 @@ public class FrisbeeConfig {
 	private String frisbeeID;
 	
 	/**
-	 *  The {@link communications.Connector connectors} instances managed by this {@code ConfigurationFactory}
+	 *  The {@link frisbee.communications.Connector connectors} instances managed by this {@code ConfigurationFactory}
 	 */
 	private  List<Connector> connectors = new LinkedList<Connector>();
 	
 	/**
-	 *  The {@link messaging.MessageMapping messagesMappings} instances managed by this {@code ConfigurationFactory}
+	 *  The {@link frisbee.messaging.MessageMapping messagesMappings} instances managed by this {@code ConfigurationFactory}
 	 */
 	private  List<MessageMapping> messageMappings = new LinkedList<MessageMapping>();
 	
 	/**
-	 *  The {@link messaging.MessageMapping loggers} instances managed by this {@code ConfigurationFactory}
+	 *  The {@link frisbee.messaging.MessageMapping loggers} instances managed by this {@code ConfigurationFactory}
 	 */
 	private  List<MessageMapping> loggers = new LinkedList<MessageMapping>();
 

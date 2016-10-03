@@ -1,4 +1,4 @@
-package configuration;
+package frisbee.tests.configuration;
 
 import static org.junit.Assert.*;
 

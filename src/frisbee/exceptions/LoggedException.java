@@ -1,11 +1,11 @@
-package exceptions;
+package frisbee.exceptions;
 
-import messaging.MessageMapping;
+import frisbee.messaging.MessageMapping;
 
 /** 
 * The {@code LoggedException} class used to wrap exception for logging purposes.
 * <p>
-* Once an exception is trapped by the {@code LoggedException}, it can be output as {@link messaging.MessageMapping message}, using a valid {@link communications.Connection connection}  
+* Once an exception is trapped by the {@code LoggedException}, it can be output as {@link frisbee.messaging.MessageMapping message}, using a valid {@link frisbee.communications.Connection connection}  
 * <p>
 
 * @author adamopan
@@ -28,7 +28,7 @@ public class LoggedException extends Exception{
 	}
 	
 	/**
-	 * The source {@link messaging.MessageMapping message} where the exception occurred
+	 * The source {@link frisbee.messaging.MessageMapping message} where the exception occurred
 	 */
 	private MessageMapping sourceMessage;
 
@@ -73,7 +73,7 @@ public class LoggedException extends Exception{
 	 * Class Constructor  
 	 *  
 	 * @param innerException the Java exception that was thrown, 
-	 * @param sourceMessage the source {@link messaging.MessageMapping message} where the exception occurred
+	 * @param sourceMessage the source {@link frisbee.messaging.MessageMapping message} where the exception occurred
 	 * @param errorClass the class signature where the exception occurred
 	 * @param errorMethod the method signature where the exception occurred
 	 * @param errorCategorty  the category of the error

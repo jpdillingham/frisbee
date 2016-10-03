@@ -1,12 +1,12 @@
-package messaging;
+package frisbee.messaging;
 
 import java.util.List;
 import java.util.Map;
 
-import tools.Tools;
+import frisbee.tools.Tools;
 
 /** 
-* The {@code MessageIOConfig} class is used to define input and output global configuration for a given {@link messaging.MessageMapping message}
+* The {@code MessageIOConfig} class is used to define input and output global configuration for a given {@link frisbee.messaging.MessageMapping message}
 * 
 * @author adamopan
 * @version 0.1 
@@ -41,7 +41,7 @@ public class MessageIOConfig  {
 	private String connectionID;
 	
 	/**
-	 *  Message configuration variable for a given {@link messaging.MessageMapping message} message input or output 
+	 *  Message configuration variable for a given {@link frisbee.messaging.MessageMapping message} message input or output 
 	 */
 	private Map<String,Object> arguments;
 	

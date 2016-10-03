@@ -1,8 +1,8 @@
-package messaging;
+package frisbee.messaging;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import tools.Tools;
+import frisbee.tools.Tools;
 
 /** 
 * The {@code MessageMapping} class is used to define the various messages used by the system

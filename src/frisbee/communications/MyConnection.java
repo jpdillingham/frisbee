@@ -1,7 +1,7 @@
-package communications;
+package frisbee.communications;
 
-import exceptions.LoggedException;
-import messaging.Message;
+import frisbee.exceptions.LoggedException;
+import frisbee.messaging.Message;
 
 public class MyConnection extends Connection {
 

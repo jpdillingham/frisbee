@@ -1,6 +1,6 @@
-package communications;
+package frisbee.communications;
 
-import exceptions.LoggedException;
+import frisbee.exceptions.LoggedException;
 
 public class MyConnector extends Connector {
 

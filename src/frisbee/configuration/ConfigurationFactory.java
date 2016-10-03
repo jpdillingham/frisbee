@@ -1,4 +1,4 @@
-package configuration;
+package frisbee.configuration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,20 +17,20 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import communications.Connection;
-import communications.Connector;
-import exceptions.LoggedException;
 import frisbee.Frisbee;
-import messaging.MessageFieldConfig;
-import messaging.MessageIOConfig;
-import messaging.MessageIOConfig.Mode;
-import tools.Tools;
-import messaging.MessageMapping;
+import frisbee.communications.Connection;
+import frisbee.communications.Connector;
+import frisbee.exceptions.LoggedException;
+import frisbee.messaging.MessageFieldConfig;
+import frisbee.messaging.MessageIOConfig;
+import frisbee.messaging.MessageMapping;
+import frisbee.messaging.MessageIOConfig.Mode;
+import frisbee.tools.Tools;
 
 /** 
 * The {@code ConfigurationFactory} class instantiates all the configuration items needed for the startup of a frisbee service instance
 * <p>
-* The {@code ConfigurationFactory} contains all the instantiated {@link communications.Connector connectors} and {@link communications.Connector messages} for a specific frisbee service instance
+* The {@code ConfigurationFactory} contains all the instantiated {@link frisbee.communications.Connector connectors} and {@link frisbee.communications.Connector messages} for a specific frisbee service instance
 * <p>
 * 
 * @author adamopan

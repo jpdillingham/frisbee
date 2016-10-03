@@ -1,9 +1,9 @@
-package messaging;
+package frisbee.messaging;
 
-import tools.Tools;
+import frisbee.tools.Tools;
 
 /** 
-* The {@code Message} class is a the live instance of a message as it is used by a {@link communications.Connection connection}
+* The {@code Message} class is a the live instance of a message as it is used by a {@link frisbee.communications.Connection connection}
 * <p>
 * A message contains a single input which can be mapped to multiple outputs  
 * <p>

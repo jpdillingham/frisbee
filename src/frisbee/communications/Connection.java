@@ -1,24 +1,24 @@
-package communications;
+package frisbee.communications;
 
 import java.util.Map;
 import java.util.Observable;
 
-import exceptions.LoggedException;
-import messaging.Message;
-import tools.Tools;
+import frisbee.exceptions.LoggedException;
+import frisbee.messaging.Message;
+import frisbee.tools.Tools;
 
 /** 
  * The {@code Connection} abstract class defines the state and capabilities of a connection. 
  * <p>
- * A {@code Connection}  must belong to a {@link communications.Connector connector} and a {@link communications.Connector connector} may have multiple connections.
+ * A {@code Connection}  must belong to a {@link frisbee.communications.Connector connector} and a {@link frisbee.communications.Connector connector} may have multiple connections.
  * <p>
  * A {@code Connection}  is used to establish a link to a single data source or destination.
  * <p>
  * When the connection {@link Connection.ConnectionMode mode} is set to {@link Connection.ConnectionMode#READ READ} or {@link Connection.ConnectionMode#READWRITE READWRITE}, 
- * the {@link #read() read}  method may used to retrieve a source {@link messaging.Message message}.
+ * the {@link #read() read}  method may used to retrieve a source {@link frisbee.messaging.Message message}.
  * <p>
  * When the connection {@link Connection.ConnectionMode mode} is set to {@link Connection.ConnectionMode#WRITE WRITE} or {@link Connection.ConnectionMode#READWRITE READWRITE}, 
- * the {@link #write(Message message) write} method may used to write to a destination {@link messaging.Message message}.
+ * the {@link #write(Message message) write} method may used to write to a destination {@link frisbee.messaging.Message message}.
  * <p>
  * 
  * @author adamopan
@@ -161,7 +161,7 @@ public abstract class Connection  extends Observable {
 	/**
 	 * Wrapper method used verify the connection mode before attempting to retrieve a message
 	 * 
-	 * @return  the {@link messaging.Message} instance retrieved
+	 * @return  the {@link frisbee.messaging.Message} instance retrieved
 	 * @throws LoggedException on failure to retrieve a message
 	 */
 	public Message read() throws LoggedException{
@@ -177,7 +177,7 @@ public abstract class Connection  extends Observable {
 	/**
 	 * Method used to retrieve a message from a data source
 	 * 
-	 * @return the {@link messaging.Message} instance retrieved
+	 * @return the {@link frisbee.messaging.Message} instance retrieved
 	 * @throws LoggedException on failure to retrieve a message
 	 */
 	protected abstract Message readMessage() throws LoggedException;
@@ -186,7 +186,7 @@ public abstract class Connection  extends Observable {
 	/**
 	 * Wrapper method used verify the connection mode before attempting to write a message to a destination
 	 * 
-	 * @param message the {@link messaging.Message} instance to that is to be output
+	 * @param message the {@link frisbee.messaging.Message} instance to that is to be output
 	 * @throws LoggedException on failure to write message to destination
 	 */
 	public void write(Message message) throws LoggedException
@@ -210,7 +210,7 @@ public abstract class Connection  extends Observable {
 	/**
 	 * Returns the current state of the connection
 	 * 
-	 * @param message the {@link messaging.Message} instance to that is to be output
+	 * @param message the {@link frisbee.messaging.Message} instance to that is to be output
 	 * @return the current connection state
 	 * 
 	 */

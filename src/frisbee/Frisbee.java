@@ -3,14 +3,14 @@ package frisbee;
 import java.util.LinkedList;
 import java.util.List;
 
-import configuration.FrisbeeConfig;
-import tools.Tools;
+import frisbee.configuration.FrisbeeConfig;
+
 
 public class Frisbee {
 	
 	
 	/**
-	 *  The {@link configuration.FrisbeeConfig frisbees} instances used by the frisbee service
+	 *  The {@link frisbee.configuration.FrisbeeConfig frisbees} instances used by the frisbee service
 	 */
 	private static List<Frisbee> frisbees = new LinkedList<Frisbee>();
 

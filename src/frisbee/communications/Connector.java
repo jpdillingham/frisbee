@@ -1,18 +1,18 @@
-package communications;
+package frisbee.communications;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Observable;
 
-import exceptions.LoggedException;
-import tools.Tools;
+import frisbee.exceptions.LoggedException;
+import frisbee.tools.Tools;
 
 /** 
 * The {@code Connector} abstract class defines the state and capabilities of a connector. 
 * <p>
 * A {@code Connector} defines to the general connection properties between one or many sources and destinations.
 * <p>
-* A {@code Connector} may have a single or multiple {@link communications.Connection connections} attributed to it when supported.
+* A {@code Connector} may have a single or multiple {@link frisbee.communications.Connection connections} attributed to it when supported.
 * <p>
 * 
 * @author adamopan
@@ -52,7 +52,7 @@ public abstract class Connector extends Observable {
 	private String connectorID;
 	
 	/**
-	 *  The {@link communications.Connection connections} managed by this {@code Connector}
+	 *  The {@link frisbee.communications.Connection connections} managed by this {@code Connector}
 	 */
 	private Map<String,Connection> connections;
 	
@@ -90,18 +90,18 @@ public abstract class Connector extends Observable {
 	public abstract void disconnect() throws LoggedException;
 	
 	/**
-	 * Method used to obtain all {@link communications.Connection connections} managed by this {@code Connector}
+	 * Method used to obtain all {@link frisbee.communications.Connection connections} managed by this {@code Connector}
 	 * 
-	 * @return the {@link communications.Connection connections} managed by this {@code Connector}
+	 * @return the {@link frisbee.communications.Connection connections} managed by this {@code Connector}
 	 */
 	public Map<String,Connection> getConnections() {
 		return connections;
 	}
 
 	/**
-	 * Method used to add a {@link communications.Connection connections} instance to the {@code Connector}
+	 * Method used to add a {@link frisbee.communications.Connection connections} instance to the {@code Connector}
 	 * 
-	 * @param connection {@link communications.Connection connections} instance to be added
+	 * @param connection {@link frisbee.communications.Connection connections} instance to be added
 	 * 
 	 * @throws LoggedException if connection already exists
 	 */
@@ -114,7 +114,7 @@ public abstract class Connector extends Observable {
 	}
 	
 	/**
-	 * Method used to remove a {@link communications.Connection connections} instance to the {@code Connector}
+	 * Method used to remove a {@link frisbee.communications.Connection connections} instance to the {@code Connector}
 	 * 
 	 * @return true on successful removal, false on failure
 	 * @throws LoggedException when the closing a connection fails

@@ -1,12 +1,12 @@
-package messaging;
+package frisbee.messaging;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import tools.Tools;
+import frisbee.tools.Tools;
 
 /** 
-* The {@code MessageFieldConfig} class is used to define field mappings found within a {@link messaging.MessageMapping message}
+* The {@code MessageFieldConfig} class is used to define field mappings found within a {@link frisbee.messaging.MessageMapping message}
 * 
 * @author adamopan
 * @version 0.1 
