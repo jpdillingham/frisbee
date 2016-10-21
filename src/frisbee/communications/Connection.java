@@ -2,6 +2,7 @@ package frisbee.communications;
 
 import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
 
 import frisbee.exceptions.LoggedException;
 import frisbee.messaging.Message;
@@ -26,9 +27,9 @@ import frisbee.tools.Tools;
  * @since 0.1
  */
 
-public abstract class Connection  extends Observable {
+public abstract class Connection  extends Observable implements Runnable {
 	
-	
+
 	/**
 	 * Connection states
 	 * <li>{@link #OPENING}</li>
@@ -243,8 +244,18 @@ public abstract class Connection  extends Observable {
 	 * 
 	 * @param the connection's ID
 	 */
-	public void setConnectorID(String connectionID) {
+	public void setConnectionID(String connectionID) {
 		this.connectionID = connectionID;
+	}
+	
+	
+	/**
+	 * Method used to set the connection's parent #Connector
+	 * 
+	 * @param the connection's ID
+	 */
+	public void setParentConnector(Connector parentConnector) {
+		this.parentConnector = parentConnector;
 	}
 	
 	/**
@@ -276,6 +287,7 @@ public abstract class Connection  extends Observable {
 	 *  
 	 * @return string containing class name and member values
 	 */
+	@Override 
 	public String toString() {
 		
 		return Tools.toString(this);

@@ -16,6 +16,43 @@ import frisbee.tools.Tools;
 */
 public class MessageMapping {
 
+	
+	
+	/**
+	 * Message Types
+	 * <li>{@link #MESSAGE}</li>
+	 * <li>{@link #RETURN_MESSAGE}</li>
+	 * <li>{@link #FOLLOW_MESSAGE}</li>
+	 * <li>{@link #EOT_MESSAGE}</li>
+	 */
+	public static enum MessageType {
+		/**
+		 * The standard message type
+		 */
+		MESSAGE,
+		
+		/**
+		 *  A message that was passed the return values of the parent transaction as an input
+		 */
+		RETURN_MESSAGE,
+		
+		/**
+		 *  A message that is executed after the completion of each parent transaction with the initial message values as an input
+		 */
+		FOLLOW_MESSAGE,
+		
+		/**
+		 *  A message that is executed after all the parent transactions have completed with the initial message values as an input
+		 */
+		EOT_MESSAGE
+		
+	}
+	
+	/**
+	 *  The type of message represented 
+	 */
+	private MessageType messageType;
+	
 	/**
 	 * The input configuration values
 	 */
@@ -132,9 +169,26 @@ public class MessageMapping {
 	 *  
 	 * @return string containing class name and member values
 	 */
+	@Override
 	public String toString() {
 		
 		return Tools.toString(this);
+	}
+
+
+	/**
+	 * @return the messageType
+	 */
+	public MessageType getMessageType() {
+		return messageType;
+	}
+
+
+	/**
+	 * @param messageType the messageType to set
+	 */
+	public void setMessageType(MessageType messageType) {
+		this.messageType = messageType;
 	}
 	
 }

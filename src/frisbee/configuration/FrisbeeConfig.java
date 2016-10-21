@@ -10,9 +10,6 @@ import frisbee.tools.Tools;
 
 /** 
 * The {@code FrisbeeConfig} class is used to contain all the configuration values of a grisbee instance
-* 
-* @author adamopan
-* @version 0.1 
 * @since 0.1
 */
 public class FrisbeeConfig {
@@ -94,6 +91,7 @@ public class FrisbeeConfig {
 	
 	public FrisbeeConfig(String id){
 		
+		this.frisbeeID = id;
 	}
 	
 	/**
@@ -101,6 +99,7 @@ public class FrisbeeConfig {
 	 *  
 	 * @return string containing class name and member values
 	 */
+	@Override
 	public String toString() {
 		
 		return Tools.toString(this);

@@ -4,9 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import frisbee.configuration.FrisbeeConfig;
+import frisbee.messaging.MessageBuilder;
 
 
-public class Frisbee {
+public class Frisbee implements Runnable{
 	
 	
 	/**
@@ -20,12 +21,18 @@ public class Frisbee {
 	private FrisbeeConfig frisbeeConfig = null;
 	
 	/**
+	 *  Used by frisbee instance to identify and transform input message before routing them to their destination
+	 */
+	private MessageBuilder messageBuilder = null;
+	
+	/**
 	 *  Constructor for a frisbee 
 	 */
 	public Frisbee(FrisbeeConfig config) {
 		this.setFrisbeeConfig(config);
 	}
 
+	
 	/**
 	 *  Add a frisbee instance to the frisbee service
 	 */
@@ -70,6 +77,18 @@ public class Frisbee {
 	 */
 	public static List<Frisbee> getFrisbees(){
 		return Frisbee.frisbees;
+	}
+
+
+	/**
+	 *  Starts the frisbee instance
+	 */
+	@Override
+	public void run() {
+		//TODO:
+		//go through all the message mappings and make the message builder observer
+		//start the thread for all the inputs
+		
 	}
 	
 }

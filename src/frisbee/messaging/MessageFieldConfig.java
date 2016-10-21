@@ -82,6 +82,7 @@ public class MessageFieldConfig {
 	 *  
 	 * @return string containing class name and member values
 	 */
+	@Override
 	public String toString() {
 		
 		return Tools.toString(this);

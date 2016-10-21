@@ -21,7 +21,7 @@ import frisbee.tools.Tools;
 */
 
 
-public abstract class Connector extends Observable {
+public abstract class Connector {
 	
 	/**
 	 * ConnectorState states
@@ -120,8 +120,7 @@ public abstract class Connector extends Observable {
 	 * @throws LoggedException when the closing a connection fails
 	 * 
 	 */
-	public boolean removeConnection(Connection connection) throws LoggedException 
-	{
+	public boolean removeConnection(Connection connection) throws LoggedException   {
 		boolean removed = this.connections.remove(connection.getConnectionID(), connection);
 		connection.close();
 		return removed;
@@ -174,6 +173,7 @@ public abstract class Connector extends Observable {
 	 *  
 	 * @return string containing class name and member values
 	 */
+	@Override
 	public String toString() {
 		
 		return Tools.toString(this);

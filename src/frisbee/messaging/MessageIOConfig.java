@@ -46,9 +46,20 @@ public class MessageIOConfig  {
 	private Map<String,Object> arguments;
 	
 	
-	
+	/**
+	 *  List of return messages to be executed using output's return values
+	 */
 	private List<MessageMapping> returnMessages;
+	
+
+	/**
+	 *  List of follow up message messages to be executed after every single message output
+	 */
 	private List<MessageMapping> followMessages;
+	
+	/**
+	 *  List of follow up end of transaction messages to be executed after all retrieved message outputs have been completed
+	 */
 	private List<MessageMapping> eotMessages;
 	
 	/**
@@ -170,6 +181,7 @@ public class MessageIOConfig  {
 	 *  
 	 * @return string containing class name and member values
 	 */
+	@Override
 	public String toString() {
 		
 		return Tools.toString(this);

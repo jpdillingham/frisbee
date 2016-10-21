@@ -29,9 +29,6 @@ import frisbee.tools.Tools;
 
 /** 
 * The {@code ConfigurationFactory} class instantiates all the configuration items needed for the startup of a frisbee service instance
-* <p>
-* The {@code ConfigurationFactory} contains all the instantiated {@link frisbee.communications.Connector connectors} and {@link frisbee.communications.Connector messages} for a specific frisbee service instance
-* <p>
 * 
 * @author adamopan
 * @version 0.1 
@@ -40,10 +37,34 @@ import frisbee.tools.Tools;
 
 public class ConfigurationFactory {
 	
+	
+
+	/**
+	 *   {@code ConfigurationFactory} is a singleton. 
+	 *  instance contains it's instance.
+	 */
+	private static ConfigurationFactory instance = new ConfigurationFactory(); 
+	
+	
+	/**
+	 * Constructor for the singleton {@code ConfigurationFactory}
+	 * 
+	 */
+	protected ConfigurationFactory(){
+		
+	}
+	
+	/**
+	 * @return the instance
+	 */
+	public static ConfigurationFactory getInstance() {
+		return instance;
+	}
+	
 	/**
 	 * Method used to retrieve a matching node from the xml
 	 * 
-	 * @parm node the parent node to search
+	 * @param node the parent node to search
 	 * @param matchItem the node name to match on
 	 * 
 	 * @return the list of nodes which passed the match criteria
@@ -74,7 +95,7 @@ public class ConfigurationFactory {
 	 * @return the instantiated member
 	 * @throws LoggedException when retrieving configuration failed
 	 */
-	private Object getObjectsFromXML(String type,Node value) throws LoggedException{
+	private Object getObjectsFromXML(String type,Node value) throws LoggedException {
 		if (value == null)
 			return null;
 		
@@ -191,7 +212,7 @@ public class ConfigurationFactory {
 	 * Method used to extract Message Mapping  configuration
 	 * 
 	 * @param node the node attributes to examine 
-	 * @parm matchMessage tag containing the messahe
+	 * @param matchMessage tag containing the message
 	 * 
 	 * @return  the list of message Mapping configurations
 	 * @throws LoggedException 
@@ -237,6 +258,7 @@ public class ConfigurationFactory {
 					}
 					
 				}	
+				
 				messageMap.setSyncOutputs(syncOutputs);
 				messageMap.setAsyncOutputs(asyncOutputs);
 				
@@ -292,15 +314,25 @@ public class ConfigurationFactory {
 
 				List<MessageMapping> messages = this.getMessageMapping(io,ppom);
 			
+				
 				switch(ppom) {
 					case "returnMessage":
 						messageIOconfig.setReturnMessages(messages);
+						for(MessageMapping m: messages) {
+							m.setMessageType(MessageMapping.MessageType.RETURN_MESSAGE);
+						}
 						break;
 					case "followMessage":
 						messageIOconfig.setFollowMessages(messages);
+						for(MessageMapping m: messages) {
+							m.setMessageType(MessageMapping.MessageType.FOLLOW_MESSAGE);
+						}
 						break;
 					case "eotMessage":
 						messageIOconfig.setFollowMessages(messages);
+						for(MessageMapping m: messages) {
+							m.setMessageType(MessageMapping.MessageType.EOT_MESSAGE);
+						}
 						break;
 				}
 	
@@ -322,7 +354,7 @@ public class ConfigurationFactory {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	private List<MessageFieldConfig> getMessageFieldConfig(Node node,String inputMatch) throws LoggedException{
+	private List<MessageFieldConfig> getMessageFieldConfig(Node node,String inputMatch) throws LoggedException {
 		
 		
 		List<MessageFieldConfig> messageFieldConfigs = new LinkedList <MessageFieldConfig>();
@@ -434,7 +466,8 @@ public class ConfigurationFactory {
 						
 						Class<?> connectionClass = Class.forName(connectionClassType);
 						Connection connection = (Connection) connectionClass.newInstance();
-						connection.setConnectorID(connectionId);
+						connection.setConnectionID(connectionId);
+						connection.setParentConnector(connector);
 						
 						members = getObjectsFromXML(null,cn);
 						connection.setConnectionParameters((Map<String,Object>) members);
@@ -470,6 +503,7 @@ public class ConfigurationFactory {
 	 *  
 	 * @return string containing class name and member values
 	 */
+	@Override
 	public String toString() {
 		
 		return Tools.toString(this);
@@ -477,7 +511,7 @@ public class ConfigurationFactory {
 	
 	public static void main(String[] args) {
 		
-		ConfigurationFactory cf = new ConfigurationFactory();
+		ConfigurationFactory cf = ConfigurationFactory.getInstance();
 		try {
 			cf.getConfiguration("./examples/config/frisbeeConfig.xml");
 			
@@ -490,4 +524,6 @@ public class ConfigurationFactory {
 			e.printStackTrace();
 		}
 	}
+
+
 }

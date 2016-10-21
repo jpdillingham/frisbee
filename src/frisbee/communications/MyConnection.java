@@ -40,5 +40,17 @@ public class MyConnection extends Connection {
 		// TODO Auto-generated method stub
 
 	}
+	
+	/**
+	 * This method polls or listens on a connection for new incoming data
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+
+		//TODO Auto-generated method stub
+		this.setChanged();
+		this.notifyObservers(null);
+	}
 
 }

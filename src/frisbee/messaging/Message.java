@@ -1,5 +1,8 @@
 package frisbee.messaging;
 
+import java.util.Map;
+
+import frisbee.communications.Connection;
 import frisbee.tools.Tools;
 
 /** 
@@ -14,20 +17,57 @@ import frisbee.tools.Tools;
 */
 public class Message {
 	
-	/* TODO
-	private String source;
+	
+	/**
+	 *  The message source connection
+	 */
+	private Connection source;
+	
+	/**
+	 *  The message destination connection
+	 */
 	private String destination;
+	
+	/**
+	 *  The message type id 
+	 */
+	private String messageMappingID;
 
+	/**
+	 *  An optional transaction identified
+	 */
 	private String transactionID;
-	private Long messageTimestamp;
-	private Object value;
-	*/
+	
+
+	/**
+	 *  message reception timestamp
+	 */
+	private Long receivedTimestamp;
+	
+	/**
+	 *  message sent timestamp
+	 */
+	private Long sentTimestamp;
+	
+	/**
+	 *  the payload received
+	 */
+	private Map<String,Object> inputPayload;
+	
+	
+	/**
+	 *  the payload sent
+	 */
+	private Map<String,Object> outputPayload;
+	
+	
 	
 	/**
 	 *  Method returning a string representation
 	 *  
 	 * @return string containing class name and member values
 	 */
+	@Override
 	public String toString() {
 		
 		return Tools.toString(this);
