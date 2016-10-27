@@ -1,11 +1,16 @@
 package frisbee.communications;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
+import frisbee.Frisbee;
 import frisbee.exceptions.LoggedException;
 import frisbee.messaging.Message;
+import frisbee.messaging.MessageIOConfig;
+import frisbee.messaging.MessageMapping;
 import frisbee.tools.Tools;
 
 /** 
@@ -165,7 +170,7 @@ public abstract class Connection  extends Observable implements Runnable {
 	 * @return  the {@link frisbee.messaging.Message} instance retrieved
 	 * @throws LoggedException on failure to retrieve a message
 	 */
-	public Message read() throws LoggedException{
+	public Message read() throws LoggedException {
 		if (this.connectionMode == ConnectionMode.READONLY || this.connectionMode == ConnectionMode.READWRITE){
 			
 			return readMessage();
@@ -190,8 +195,7 @@ public abstract class Connection  extends Observable implements Runnable {
 	 * @param message the {@link frisbee.messaging.Message} instance to that is to be output
 	 * @throws LoggedException on failure to write message to destination
 	 */
-	public void write(Message message) throws LoggedException
-	{
+	public void write(Message message) throws LoggedException {
 		if (this.connectionMode == ConnectionMode.WRITEONLY || this.connectionMode == ConnectionMode.READWRITE){
 			
 			writeMessage(message);
@@ -267,8 +271,81 @@ public abstract class Connection  extends Observable implements Runnable {
 	public Connector getParentConnector() {
 		return parentConnector;
 	}
+	
+	
+	/**
+	 * Returns The all the MessageMappings using this connections as an input
+	 * 
+	 * @return the message mappings using using this connections as an input
+	 * 
+	 */
+	public List<MessageMapping> getInputMappings() {
+		
+		LinkedList<MessageMapping> inputMessages = new LinkedList<MessageMapping>();
+		
+		for(Frisbee f : Frisbee.getFrisbees()) {
+			List<MessageMapping> allMessages = f.getFrisbeeConfig().getMessageMappings();
+			for(MessageMapping m : allMessages) {
+				MessageIOConfig io = m.getInput(); 
+				if(io.getConnectionID().equals(this.connectionID)) {
+						inputMessages.add(m);
+				}
+			}
+		}
+			
+		return inputMessages;
+	}
+	
+	/**
+	 *  Returns The all the MessageMappings using this connections as a asynchronous output
+	 * 
+	 * @return the message mappings using using this connections as a asynchronous output
+	 * 
+	 */
+	public List<MessageMapping> getAsyncOutputMappings() {
+		LinkedList<MessageMapping> outMessages = new LinkedList<MessageMapping>();
+		
+		for(Frisbee f : Frisbee.getFrisbees()) {
+			List<MessageMapping> allMessages = f.getFrisbeeConfig().getMessageMappings();
+			for(MessageMapping m : allMessages) {
+				for (MessageIOConfig io : m.getAsyncOutputs()) {
+					if(io.getConnectionID().equals(this.connectionID)) {
+						outMessages.add(m);
+					}
+				}
+			}
+		}
+			
+		return outMessages;
+	}
+	
+	/**
+	 *  Returns The all the MessageMappings using this connections as a synchronous output
+	 * 
+	 * @return the message mappings using using this connections as a synchronous output
+	 * 
+	 */
+	public List<MessageMapping> getSyncOutputMappings() {
+		
+		LinkedList<MessageMapping> outMessages = new LinkedList<MessageMapping>();
+		
+		for(Frisbee f : Frisbee.getFrisbees()) {
+			List<MessageMapping> allMessages = f.getFrisbeeConfig().getMessageMappings();
+			for(MessageMapping m : allMessages) {
+				for (MessageIOConfig io : m.getSyncOutputs()) {
+					if(io.getConnectionID().equals(this.connectionID)) {
+						outMessages.add(m);
+					}
+				}
+			}
+		}
+			
+		return outMessages;
+	}
 
 	/**
+	 * Returns the connections parameters 
+	 *  
 	 * @return the connectionParameters
 	 */
 	public Map<String,Object> getConnectionParameters() {
@@ -276,6 +353,8 @@ public abstract class Connection  extends Observable implements Runnable {
 	}
 
 	/**
+	 * Sets the connection parameters
+	 *  
 	 * @param connectionParameters the connectionParameters to set
 	 */
 	public void setConnectionParameters(Map<String,Object> connectionParameters) {

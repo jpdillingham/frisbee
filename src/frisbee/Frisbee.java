@@ -1,14 +1,19 @@
 package frisbee;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import frisbee.communications.Connection;
+import frisbee.communications.Connector;
 import frisbee.configuration.FrisbeeConfig;
 import frisbee.messaging.MessageBuilder;
+import frisbee.messaging.MessageIOConfig;
+import frisbee.messaging.MessageMapping;
 
 
 public class Frisbee implements Runnable{
-	
 	
 	/**
 	 *  The {@link frisbee.configuration.FrisbeeConfig frisbees} instances used by the frisbee service
@@ -26,15 +31,25 @@ public class Frisbee implements Runnable{
 	private MessageBuilder messageBuilder = null;
 	
 	/**
+	 *  Used by frisbee instance to identify the running conneciton listener threads
+	 */
+	private Map<String,Thread> listenerThreads = null;
+	
+	/**
 	 *  Constructor for a frisbee 
 	 */
 	public Frisbee(FrisbeeConfig config) {
 		this.setFrisbeeConfig(config);
+		this.messageBuilder = new MessageBuilder();
+		this.listenerThreads = new HashMap<String,Thread>();
 	}
 
 	
+	
 	/**
 	 *  Add a frisbee instance to the frisbee service
+	 *  
+	 *  @return boolean success or failure
 	 */
 	public static boolean addFrisbee(Frisbee frisbee)
 	{
@@ -70,6 +85,7 @@ public class Frisbee implements Runnable{
 	 */
 	public void setFrisbeeConfig(FrisbeeConfig frisbeeConfig) {
 		this.frisbeeConfig = frisbeeConfig;
+		this.addConnectionObservers();
 	}
 	
 	/**
@@ -78,16 +94,64 @@ public class Frisbee implements Runnable{
 	public static List<Frisbee> getFrisbees(){
 		return Frisbee.frisbees;
 	}
-
-
+	
+	
 	/**
-	 *  Starts the frisbee instance
+	 *  Adds the frisbee instance's MessageBuilder as an observer to all the input connections 
+	 */
+	private void addConnectionObservers(){
+		
+		for( MessageMapping m: this.frisbeeConfig.getMessageMappings()){
+			MessageIOConfig input = m.getInput();
+			for(Connector connector: this.frisbeeConfig.getConnectors()) {
+				 	Connection connection = connector.getConnections().get(input.getConnectionID());
+				 	if(connection != null) {
+				 		connection.addObserver(this.messageBuilder);
+				 	}
+			}
+					
+		}
+	}
+	
+	/**
+	 * Deletes the frisbee instance's MessageBuilder from being a connection observer
+	 */
+	private void deleteConnectionObservers(){
+	
+		for( MessageMapping m: this.frisbeeConfig.getMessageMappings()){
+			MessageIOConfig input = m.getInput();
+			for(Connector connector: this.frisbeeConfig.getConnectors()) {
+				 	Connection connection = connector.getConnections().get(input.getConnectionID());
+				 	if(connection != null) {
+				 		connection.deleteObserver(this.messageBuilder);
+				 	}
+			}
+				
+		}
+	}
+
+	
+	/**
+	 *  Creates and starts all the input connection listeners
 	 */
 	@Override
 	public void run() {
-		//TODO:
-		//go through all the message mappings and make the message builder observer
-		//start the thread for all the inputs
+		
+		for( MessageMapping m: this.frisbeeConfig.getMessageMappings()){
+			MessageIOConfig input = m.getInput();
+			for(Connector connector: this.frisbeeConfig.getConnectors()) {
+					String connectionID = input.getConnectionID();
+				 	Connection connection = connector.getConnections().get(connectionID);
+				 	if(connection != null) {
+				 		if(!this.listenerThreads.containsKey(connectionID)) {
+				 			Thread listenerThread = new Thread(connection); 
+				 			this.listenerThreads.put(connectionID, listenerThread);
+				 			listenerThread.start();
+				 		}
+				 	}
+			}
+				
+		}
 		
 	}
 	
