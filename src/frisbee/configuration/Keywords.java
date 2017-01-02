@@ -1,5 +1,12 @@
 package frisbee.configuration;
 
+/** 
+* The {@code Keywords} class contains constants reflecting keywords found in the frisbee configuration file
+*
+* @author adamopan
+* @version 0.1 
+* @since 0.1
+*/
 public final class Keywords {
 	
 	//tag containing the match style
@@ -19,6 +26,9 @@ public final class Keywords {
 	
 	//tag containing the value to match on
 	public static final String MATCHONVALUE =  "matchOnValue";
+	
+	//tag containing the value to force on output
+	public static final String FORCEVALUE =  "forceOuputValue";
 	
 	//tag containing the field identifier
 	public static final String FIELD_KEY =  "key";

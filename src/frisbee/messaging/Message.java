@@ -26,12 +26,12 @@ public class Message {
 	/**
 	 *  The message destination connection
 	 */
-	private String destination;
+	private Connection destination;
 	
 	/**
 	 *  The message type id 
 	 */
-	private String messageMappingID;
+	private MessageMapping messageMapping;
 
 	/**
 	 *  An optional transaction identified
@@ -60,7 +60,20 @@ public class Message {
 	 */
 	private Map<String,Object> outputPayload;
 	
+
+	/**
+	 *  Message Constructor
+	 */
+	public Message(String transactionID, Connection source, Connection destination,MessageMapping messageMapping,Long receivedTimestamp, Long sentTimestamp,Map<String,Object> inputPayload,Map<String,Object> outputPayload ) {
 	
+		this.transactionID = transactionID;
+		this.source = source;
+		this.destination = destination;
+		this.messageMapping = messageMapping;
+		this.receivedTimestamp = receivedTimestamp;
+		this.sentTimestamp = sentTimestamp;
+		
+	}
 	
 	/**
 	 *  Method returning a string representation

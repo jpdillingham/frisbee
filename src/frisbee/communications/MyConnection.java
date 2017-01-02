@@ -20,7 +20,6 @@ public class MyConnection extends Connection {
 	@Override
 	public void pause() throws LoggedException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

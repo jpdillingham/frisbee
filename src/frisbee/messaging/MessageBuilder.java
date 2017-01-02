@@ -1,15 +1,10 @@
 package frisbee.messaging;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import frisbee.communications.Connection;
 import frisbee.configuration.Keywords;
@@ -125,8 +120,21 @@ public final class MessageBuilder implements Observer{
 	}
 	
 	
-	public static Message transform(MessageMapping messageMap, Map<String,Object> payload ) {
-		return null;
+	public static Message transform(MessageMapping messageMap, Map<String,Object> payload , Long receivedTimestamp) {
+		
+		Message result = null;
+		
+		List<MessageFieldConfig> fields = messageMap.getFields();
+		for(MessageFieldConfig field : fields) {
+			
+			LinkedHashMap<String, Map<String, Object>>  outputArgs = field.getOutputArguments();
+			
+			
+			//TODO: lookup every keyword and apply transformation to output payload. construct Message()
+		}
+			
+		
+		return result;
 	}
 
 
@@ -135,7 +143,9 @@ public final class MessageBuilder implements Observer{
 
 		if( o instanceof Connection) {
 			
+			Long receivedTimestamp = System.currentTimeMillis();
 			Connection connection = (Connection) o;
+			Map<String,Object> payload = (Map<String,Object>) arg;
 			List<MessageMapping> messageMappings = connection.getInputMappings();
 			
 			//TODO:
