@@ -41,7 +41,7 @@ public class MessageIOConfig  {
 	private String connectionID;
 	
 	/**
-	 *  Message configuration variable for a given {@link frisbee.messaging.MessageMapping message} message input or output 
+	 *  Message configuration variable for a given {@link frisbee.messaging.MessageMapping message} input or output 
 	 */
 	private Map<String,Object> arguments;
 	

@@ -2,7 +2,6 @@ package frisbee.communications;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Observable;
 
 import frisbee.exceptions.LoggedException;
 import frisbee.tools.Tools;

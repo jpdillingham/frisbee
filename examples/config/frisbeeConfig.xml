@@ -11,6 +11,7 @@
 		<connection class='frisbee.communications.MyConnection' id='Connection1'>
 			<arg1 class='String'>argument1</arg1>
 			<arg2 class='Integer'>1</arg2>
+			<verbose class='String'>WARNING</verbose> <!-- Verbosity level for standard ouptut -->
 		</connection>
 		
 
