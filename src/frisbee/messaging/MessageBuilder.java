@@ -3,6 +3,7 @@ package frisbee.messaging;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -26,7 +27,7 @@ public final class MessageBuilder implements Observer{
 	 *  @param payload the payload to examine
 	 *  @return the best matching message definition
 	 */
-	public static MessageMapping identify(List<MessageMapping> messageMappings, Map<String,Object> payload) {
+	public static MessageMapping identify(List<MessageMapping> messageMappings, Map<String,Object> inputPayload) {
 	
 		MessageMapping result = null;
 		
@@ -47,7 +48,7 @@ public final class MessageBuilder implements Observer{
 			boolean skipToNextMessage = false;
 				
 
-			//TODOL partial match styles
+			//TODO: partial match styles
 			/*
 			switch(matchStyle) {
 			
@@ -76,7 +77,7 @@ public final class MessageBuilder implements Observer{
 				if(matchOnValue != null) {
 				
 					Object matchKey  = field.getInputArguments().get(Keywords.FIELD_KEY);
-					Object payloadKey = payload.get(matchKey.toString());
+					Object payloadKey = inputPayload.get(matchKey.toString());
 					
 					//field exists in payload
 					if(payloadKey != null) {
@@ -104,7 +105,7 @@ public final class MessageBuilder implements Observer{
 					
 					//is it the best match so far?
 					if(msgMatchCount > highestMatchCount) {
-						
+						                                                                 
 						highestMatchCount = msgMatchCount;
 						result = messageMap;
 					}
@@ -120,19 +121,113 @@ public final class MessageBuilder implements Observer{
 	}
 	
 	
-	public static Message transform(MessageMapping messageMap, Map<String,Object> payload , Long receivedTimestamp) {
+	public static Message transform(MessageMapping messageMap, Map<String,Object> inputPayload , Long receivedTimestamp) {
 		
 		Message result = null;
 		
 		List<MessageFieldConfig> fields = messageMap.getFields();
+	
 		for(MessageFieldConfig field : fields) {
 			
 			LinkedHashMap<String, Map<String, Object>>  outputArgs = field.getOutputArguments();
 			
 			
-			//TODO: lookup every keyword and apply transformation to output payload. construct Message()
+			// lookup every keyword and apply field  transformation to output payload. 
+			
+			for(Entry<String, Map<String, Object>> output: outputArgs.entrySet()) {
+				
+				String connectionID = output.getKey();
+				
+				Map<String, Object> outputFieldConfig = output.getValue();
+				
+				Object forceVal = outputFieldConfig.get(Keywords.FORCEVALUE);
+				Integer fldLen = (Integer) outputFieldConfig.get(Keywords.FLD_LENGTH);
+				Object trunk = outputFieldConfig.get(Keywords.FLD_TRUNK);
+				Object lpad = outputFieldConfig.get(Keywords.FLD_L_PAD);
+				Object rpad = outputFieldConfig.get(Keywords.FLD_R_PAD);
+				Object header = outputFieldConfig.get(Keywords.FLD_HEADER);
+				Object footer = outputFieldConfig.get(Keywords.FLD_FOOTER);
+				Object fldType = outputFieldConfig.get(Keywords.FLD_TYPE);
+				
+				Map<String,Object> outputPayload = null;
+				
+				Object matchKey  = field.getInputArguments().get(Keywords.FIELD_KEY);
+				Object payloadKey = inputPayload.get(matchKey.toString());
+				
+				Object value = payloadKey;
+				
+				if(forceVal != null)
+						value = forceVal;
+	
+				
+				if(fldLen != null) {
+					
+					if (value.toString().length() < fldLen) {
+						
+						if(trunk != null) {
+							
+							if(trunk.equals(Keywords.FLD_TRUNK_LEFT)) {
+								//TODO: truncate left to fit
+							}
+							else if (trunk.equals(Keywords.FLD_TRUNK_RIGHT)) {
+								//TODO: truncate right to fit
+							}
+						}
+						
+					}
+					else if (value.toString().length() > fldLen) {
+						
+						if(rpad != null && lpad != null) {
+							//TODO: pad half half, with preference for lpad to be larger
+						}
+						else if (rpad != null) {
+							//TODO: pad only right  and trunk padding rightmost if needed
+						}
+						else if (lpad != null) {
+							//TODO: pad only left, and trunk padding leftmost if needed
+						}
+						else {
+							//TODO: left pad with spaces  
+						}
+						
+					}
+			
+				}
+					
+	
+				if(header != null) {
+						value =  header.toString() + value.toString();
+				}
+				
+				if(footer != null) {
+						value = value.toString() + footer.toString();
+				}
+				
+				
+				if(fldType != null) {
+					
+					if(!value.getClass().getSimpleName().equals(fldType)) {
+						//TODO: datatype conversions
+					}
+				
+				}
+					
+
+			}
+
+			
 		}
 			
+		
+		//message transformation
+		/*
+				Keywords.MSG_LENGTH
+				Keywords.MSG_TRUNK
+				Keywords.MSG_L_PAD
+				Keywords.MSG_R_PAD
+				Keywords.MSG_HEADER
+				Keywords.MSG_FOOTER
+		 */
 		
 		return result;
 	}

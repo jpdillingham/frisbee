@@ -31,7 +31,7 @@
 			
 			<output id='Connection1'>
 				<forceOuputValue class='String'>ABC</forceOuputValue>
-				<length class='Integer'>32</length>
+				<length class='Integer'>32</length> 
 				<lpad class='String'></lpad>
 				<rpad class='String'>0</rpad>
 				<header class='String'></header>
@@ -45,7 +45,7 @@
 	
 	<message id='TestMessage'>
 	
-		<input id='Connection2'  mode='sync'>
+		<input id='Connection2'  mode='sync'> <!-- async polls/listens independantly of other messages, sync waits for finish -->
 
 			<arg1 class='String'></arg1>
 			<arg2 class='String'></arg2>	
@@ -55,14 +55,15 @@
 			<matchStyle class='String'>exact</matchStyle>  <!-- exact match; closest match under; closest match over-->
 		</input>
 		
-		<output id='Connection1' mode='sync'>
+		<output id='Connection1' mode='sync'> <!-- async sends outputs independantly, sync waits for  previous to finish -->
 	
 			<arg1></arg1>
 			<arg2></arg2>
 
 			
-			<length class='Integer'>32</length>
-			<lpad class='String'> </lpad>
+			<length class='Integer'>32</length> <!-- length without header or footer -->
+			<trunk>left</trunk> <!-- strategy for fixed length -->
+			<pad class='String'> </lpad>
 			<rpad class='String'>0</rpad>
 			<header class='String'> </header>
 			<footer class='String'> </footer>
@@ -95,6 +96,7 @@
 			<input id='ccc'>
 				<matchOnValue class='String'>ABC</matchOnValue>
 				<key class='Integer'>1</key>
+				<dateformat></dateformat>
 			</input>
 			
 			<output id='c2'>
@@ -104,7 +106,10 @@
 				<rpad class='String'>0</rpad>
 				<header class='String'> </header>
 				<footer class='String'> </footer>
-				<key class='Integer'>1</key> <!-- two identical output keys for 2 different inputs are concatenated -->
+				<trunk>left</trunk> <!-- strategy for fixed length -->
+				<type>Integer</type> <!-- change data type -->
+				<key class='Integer'>1</key> <!-- two identical output keys for 2 different fields are concatenated in the order that they appear-->
+				<dateformat></dateformat>
 			</output>
 			
 			<output id='c1'>

@@ -32,5 +32,28 @@ public final class Keywords {
 	
 	//tag containing the field identifier
 	public static final String FIELD_KEY =  "key";
+	
+	//Total message length
+	public static final String MSG_LENGTH =  "length";
+	public static final String MSG_TRUNK =  "trunk";
+	public static final String MSG_TRUNK_RIGHT =  "right";
+	public static final String MSG_TRUNK_LEFT =  "left";
+	public static final String MSG_L_PAD =  "lpad";
+	public static final String MSG_R_PAD =  "rpad";
+	public static final String MSG_HEADER =  "header";
+	public static final String MSG_FOOTER =  "footer";
+	
+	
+	//field transformation parameters for output
+	public static final String FLD_LENGTH =  "length";
+	public static final String FLD_TRUNK =  "trunk";
+	public static final String FLD_TRUNK_RIGHT =  "right";
+	public static final String FLD_TRUNK_LEFT =  "left";
+	public static final String FLD_L_PAD =  "lpad";
+	public static final String FLD_R_PAD =  "rpad";
+	public static final String FLD_HEADER =  "header";
+	public static final String FLD_FOOTER =  "footer";
+	public static final String FLD_TYPE =  "type";
+	public static final String FLD_DATEFORMAT =  "dateformat";
 
 }
