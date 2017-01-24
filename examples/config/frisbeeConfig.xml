@@ -63,7 +63,7 @@
 			
 			<length class='Integer'>32</length> <!-- length without header or footer -->
 			<trunk>left</trunk> <!-- strategy for fixed length -->
-			<pad class='String'> </lpad>
+			<lpad class='String'> </lpad>
 			<rpad class='String'>0</rpad>
 			<header class='String'> </header>
 			<footer class='String'> </footer>
