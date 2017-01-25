@@ -48,7 +48,7 @@ public final class MessageBuilder implements Observer {
             /*
 			switch(matchStyle) {
 			
-			case Keywords.MATCHSTYLE_UNDER:
+			case Keyword.MATCHSTYLE_UNDER:
 				break;
 				
 			case Keywords.MATCHSTYLE_OVER:
